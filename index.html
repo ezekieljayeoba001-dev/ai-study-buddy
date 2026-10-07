@@ -1,169 +1,1040 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12">
+<title>AI Study Buddy</title>
 
-      <title>AI Study Buddy</title>
+<style>
+:root{
+  --bg:#080a0f;
+  --panel:#10131a;
+  --panel2:#171b24;
+  --border:#242936;
+  --text:#f7f8fb;
+  --muted:#9299a8;
+  --accent:#7c5cff;
+  --accent2:#9b83ff;
+  --user:#252b3a;
+  --ai:#141821;
+  --danger:#ff5c70;
+}
 
-        <style>
-            * {
-                  box-sizing: border-box;
-                        margin: 0;
-                              padding: 0;
-                                  }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-                                      body {
-                                            font-family: Arial, sans-serif;
-                                                  background: #f5f7fb;
-                                                        color: #1f2937;
-                                                              min-height: 100vh;
-                                                                  }
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
 
-                                                                      header {
-                                                                            background: #ffffff;
-                                                                                  padding: 20px;
-                                                                                        text-align: center;
-                                                                                              border-bottom: 1px solid #e5e7eb;
-                                                                                                  }
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-                                                                                                      header h1 {
-                                                                                                            font-size: 26px;
-                                                                                                                  margin-bottom: 6px;
-                                                                                                                      }
+button,
+textarea{
+  font:inherit;
+}
 
-                                                                                                                          header p {
-                                                                                                                                color: #6b7280;
-                                                                                                                                      font-size: 14px;
-                                                                                                                                          }
+button{
+  border:0;
+  cursor:pointer;
+  color:inherit;
+}
 
-                                                                                                                                              main {
-                                                                                                                                                    max-width: 700px;
-                                                                                                                                                          margin: 30px auto;
-                                                                                                                                                                padding: 0 16px;
-                                                                                                                                                                    }
+/* APP */
 
-                                                                                                                                                                        .welcome {
-                                                                                                                                                                              text-align: center;
-                                                                                                                                                                                    margin-bottom: 25px;
-                                                                                                                                                                                        }
+.app{
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(124,92,255,.18),transparent 35%),
+    var(--bg);
+}
 
-                                                                                                                                                                                            .welcome h2 {
-                                                                                                                                                                                                  font-size: 24px;
-                                                                                                                                                                                                        margin-bottom: 8px;
-                                                                                                                                                                                                            }
+/* HEADER */
 
-                                                                                                                                                                                                                .welcome p {
-                                                                                                                                                                                                                      color: #6b7280;
-                                                                                                                                                                                                                          }
+.header{
+  height:64px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  border-bottom:1px solid var(--border);
+  background:rgba(8,10,15,.86);
+  backdrop-filter:blur(18px);
+}
 
-                                                                                                                                                                                                                              .card {
-                                                                                                                                                                                                                                    background: white;
-                                                                                                                                                                                                                                          padding: 20px;
-                                                                                                                                                                                                                                                border-radius: 16px;
-                                                                                                                                                                                                                                                      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-                                                                                                                                                                                                                                                          }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
 
-                                                                                                                                                                                                                                                              textarea {
-                                                                                                                                                                                                                                                                    width: 100%;
-                                                                                                                                                                                                                                                                          min-height: 130px;
-                                                                                                                                                                                                                                                                                padding: 15px;
-                                                                                                                                                                                                                                                                                      border: 1px solid #d1d5db;
-                                                                                                                                                                                                                                                                                            border-radius: 12px;
-                                                                                                                                                                                                                                                                                                  resize: vertical;
-                                                                                                                                                                                                                                                                                                        font-size: 16px;
-                                                                                                                                                                                                                                                                                                              outline: none;
-                                                                                                                                                                                                                                                                                                                  }
+.logo{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  background:linear-gradient(135deg,#7c5cff,#4f8cff);
+  box-shadow:0 8px 25px rgba(124,92,255,.28);
+}
 
-                                                                                                                                                                                                                                                                                                                      textarea:focus {
-                                                                                                                                                                                                                                                                                                                            border-color: #6366f1;
-                                                                                                                                                                                                                                                                                                                                }
+.brand h1{
+  font-size:16px;
+  font-weight:700;
+}
 
-                                                                                                                                                                                                                                                                                                                                    button {
-                                                                                                                                                                                                                                                                                                                                          width: 100%;
-                                                                                                                                                                                                                                                                                                                                                margin-top: 12px;
-                                                                                                                                                                                                                                                                                                                                                      padding: 14px;
-                                                                                                                                                                                                                                                                                                                                                            border: none;
-                                                                                                                                                                                                                                                                                                                                                                  border-radius: 12px;
-                                                                                                                                                                                                                                                                                                                                                                        background: #4f46e5;
-                                                                                                                                                                                                                                                                                                                                                                              color: white;
-                                                                                                                                                                                                                                                                                                                                                                                    font-size: 16px;
-                                                                                                                                                                                                                                                                                                                                                                                          font-weight: bold;
-                                                                                                                                                                                                                                                                                                                                                                                                cursor: pointer;
-                                                                                                                                                                                                                                                                                                                                                                                                    }
+.brand span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                        button:hover {
-                                                                                                                                                                                                                                                                                                                                                                                                              background: #4338ca;
-                                                                                                                                                                                                                                                                                                                                                                                                                  }
+.header-actions{
+  display:flex;
+  gap:8px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                      .features {
-                                                                                                                                                                                                                                                                                                                                                                                                                            display: grid;
-                                                                                                                                                                                                                                                                                                                                                                                                                                  grid-template-columns: repeat(3, 1fr);
-                                                                                                                                                                                                                                                                                                                                                                                                                                        gap: 10px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                              margin-top: 20px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
+.icon-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                      .feature {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            padding: 15px 8px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                  background: #eef2ff;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        border-radius: 12px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              text-align: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    font-size: 14px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+/* CHAT */
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            footer {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  text-align: center;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        padding: 30px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              color: #9ca3af;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    font-size: 13px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
+.chat{
+  flex:1;
+  overflow-y:auto;
+  padding:24px 16px 170px;
+  scroll-behavior:smooth;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            @media (max-width: 500px) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  .features {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          grid-template-columns: 1fr;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </style>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </head>
+.chat-inner{
+  max-width:760px;
+  margin:auto;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      <body>
+/* WELCOME */
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <header>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h1>📚 AI Study Buddy</h1>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p>Your personal AI learning assistant</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </header>
+.welcome{
+  min-height:62vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <main>
+.big-logo{
+  width:76px;
+  height:76px;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  margin-bottom:20px;
+  background:linear-gradient(135deg,#7c5cff,#4f8cff);
+  box-shadow:0 18px 50px rgba(124,92,255,.28);
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <section class="welcome">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <h2>What do you want to learn?</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <p>Ask a question and your AI Study Buddy will help.</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </section>
+.welcome h2{
+  font-size:29px;
+  margin-bottom:9px;
+  letter-spacing:-.7px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <section class="card">
+.welcome p{
+  color:var(--muted);
+  max-width:330px;
+  line-height:1.5;
+  font-size:14px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <textarea
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          id="question"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  placeholder="Example: Explain photosynthesis in simple words..."
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ></textarea>
+/* QUICK ACTIONS */
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <button id="askButton">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Ask AI
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </button>
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:25px;
+  width:100%;
+  max-width:440px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <div class="features">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <div class="feature">💡 Simple Explanations</div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <div class="feature">📝 Quizzes</div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <div class="feature">🗂️ Flashcards</div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+.quick{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  text-align:left;
+  transition:.2s;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </section>
+.quick:active{
+  transform:scale(.97);
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      </main>
+.quick-icon{
+  font-size:21px;
+  margin-bottom:8px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <footer>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            AI Study Buddy © 2026
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </footer>
+.quick strong{
+  display:block;
+  font-size:13px;
+}
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </html>
+.quick small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* MESSAGES */
+
+.message{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+  animation:appear .25s ease;
+}
+
+@keyframes appear{
+  from{
+    opacity:0;
+    transform:translateY(7px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.avatar{
+  width:34px;
+  height:34px;
+  flex-shrink:0;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+}
+
+.ai-avatar{
+  background:linear-gradient(135deg,#7c5cff,#4f8cff);
+}
+
+.user-avatar{
+  background:#303747;
+}
+
+.bubble{
+  max-width:calc(100% - 44px);
+  padding:13px 15px;
+  border-radius:17px;
+  line-height:1.55;
+  font-size:15px;
+  white-space:pre-wrap;
+}
+
+.ai .bubble{
+  background:var(--ai);
+  border:1px solid var(--border);
+  border-top-left-radius:5px;
+}
+
+.user{
+  flex-direction:row-reverse;
+}
+
+.user .bubble{
+  background:var(--user);
+  border-top-right-radius:5px;
+}
+
+/* TYPING */
+
+.typing{
+  display:flex;
+  gap:5px;
+  padding:4px;
+}
+
+.typing span{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#9299a8;
+  animation:bounce 1.2s infinite;
+}
+
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
+
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
+
+@keyframes bounce{
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-5px)}
+}
+
+/* COMPOSER */
+
+.composer-area{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(
+    to top,
+    rgba(8,10,15,1) 65%,
+    rgba(8,10,15,.8),
+    transparent
+  );
+}
+
+.composer{
+  max-width:760px;
+  margin:auto;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:8px;
+  box-shadow:0 15px 45px rgba(0,0,0,.35);
+}
+
+.input-row{
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+}
+
+.attach{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:14px;
+  background:var(--panel2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+}
+
+#question{
+  flex:1;
+  min-height:42px;
+  max-height:120px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:var(--text);
+  padding:11px 5px;
+  line-height:1.4;
+  font-size:15px;
+}
+
+#question::placeholder{
+  color:#707787;
+}
+
+.send{
+  width:42px;
+  height:42px;
+  flex-shrink:0;
+  border-radius:14px;
+  background:var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.send:active{
+  transform:scale(.94);
+}
+
+.composer-tools{
+  display:flex;
+  gap:7px;
+  padding:7px 3px 2px;
+}
+
+.tool{
+  padding:7px 10px;
+  border-radius:10px;
+  background:transparent;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.tool:active{
+  background:var(--panel2);
+}
+
+/* SIDE PANEL */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:blur(5px);
+  display:none;
+  z-index:20;
+}
+
+.overlay.show{
+  display:block;
+}
+
+.drawer{
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:min(330px,88%);
+  background:#0d1016;
+  border-right:1px solid var(--border);
+  padding:18px;
+  transform:translateX(-100%);
+  transition:.25s ease;
+}
+
+.overlay.show .drawer{
+  transform:translateX(0);
+}
+
+.drawer-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.new-chat{
+  width:100%;
+  padding:13px;
+  border-radius:13px;
+  background:var(--accent);
+  font-weight:bold;
+  margin-bottom:20px;
+}
+
+.drawer-section{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  margin:18px 4px 8px;
+}
+
+.history{
+  padding:12px;
+  border-radius:11px;
+  color:#dce0e8;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.history:hover{
+  background:var(--panel);
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:105px;
+  transform:translateX(-50%) translateY(20px);
+  background:#202531;
+  border:1px solid var(--border);
+  padding:10px 15px;
+  border-radius:12px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:50;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:500px){
+  .welcome h2{
+    font-size:25px;
+  }
+
+  .chat{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .quick-actions{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .bubble{
+    font-size:14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <header class="header">
+
+    <div class="brand">
+      <div class="logo">🧠</div>
+      <div>
+        <h1>AI Study Buddy</h1>
+        <span>Your personal AI tutor</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="newChatBtn" title="New chat">＋</button>
+      <button class="icon-btn" id="menuBtn" title="Menu">☰</button>
+    </div>
+
+  </header>
+
+  <!-- CHAT -->
+  <main class="chat" id="chat">
+
+    <div class="chat-inner" id="chatInner">
+
+      <!-- WELCOME -->
+      <section class="welcome" id="welcome">
+
+        <div class="big-logo">🧠</div>
+
+        <h2>What do you want to learn?</h2>
+
+        <p>
+          Ask anything. I'll explain difficult topics,
+          help you study and test your knowledge.
+        </p>
+
+        <div class="quick-actions">
+
+          <button class="quick" data-prompt="Explain this topic in very simple words.">
+            <div class="quick-icon">💡</div>
+            <strong>Explain</strong>
+            <small>Make difficult topics simple</small>
+          </button>
+
+          <button class="quick" data-prompt="Create a short quiz about this topic.">
+            <div class="quick-icon">📝</div>
+            <strong>Quiz me</strong>
+            <small>Test my knowledge</small>
+          </button>
+
+          <button class="quick" data-prompt="Create flashcards for this topic.">
+            <div class="quick-icon">🗂️</div>
+            <strong>Flashcards</strong>
+            <small>Remember key facts</small>
+          </button>
+
+          <button class="quick" data-prompt="Summarize this topic for studying.">
+            <div class="quick-icon">📚</div>
+            <strong>Summarize</strong>
+            <small>Get the important points</small>
+          </button>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- COMPOSER -->
+  <div class="composer-area">
+
+    <div class="composer">
+
+      <div class="input-row">
+
+        <button class="attach" id="attachBtn" title="Add photo">
+          ＋
+        </button>
+
+        <textarea
+          id="question"
+          rows="1"
+          placeholder="Ask anything about your studies..."
+        ></textarea>
+
+        <button class="send" id="askButton" title="Ask AI">
+          ↑
+        </button>
+
+      </div>
+
+      <div class="composer-tools">
+        <button class="tool" id="voiceBtn">🎤 Voice</button>
+        <button class="tool" data-prompt="Explain this topic in simple words.">💡 Explain</button>
+        <button class="tool" data-prompt="Quiz me on this topic.">📝 Quiz</button>
+        <button class="tool" data-prompt="Make flashcards about this topic.">🗂️ Cards</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- DRAWER -->
+
+<div class="overlay" id="overlay">
+
+  <aside class="drawer">
+
+    <div class="drawer-title">
+      <strong>AI Study Buddy</strong>
+      <button class="icon-btn" id="closeMenu">×</button>
+    </div>
+
+    <button class="new-chat" id="drawerNewChat">
+      ＋ New Chat
+    </button>
+
+    <div class="drawer-section">Study</div>
+
+    <div class="history">💡 Explain a topic</div>
+    <div class="history">📝 Practice quiz</div>
+    <div class="history">🗂️ Flashcards</div>
+    <div class="history">📚 Summarize notes</div>
+
+    <div class="drawer-section">Recent</div>
+
+    <div class="history">No recent chats yet</div>
+
+  </aside>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const question = document.getElementById("question");
+const askButton = document.getElementById("askButton");
+const chat = document.getElementById("chat");
+const chatInner = document.getElementById("chatInner");
+const welcome = document.getElementById("welcome");
+
+const overlay = document.getElementById("overlay");
+const menuBtn = document.getElementById("menuBtn");
+const closeMenu = document.getElementById("closeMenu");
+const newChatBtn = document.getElementById("newChatBtn");
+const drawerNewChat = document.getElementById("drawerNewChat");
+
+const voiceBtn = document.getElementById("voiceBtn");
+const attachBtn = document.getElementById("attachBtn");
+const toastBox = document.getElementById("toast");
+
+/* TOAST */
+
+function toast(message){
+
+  toastBox.textContent = message;
+  toastBox.classList.add("show");
+
+  setTimeout(()=>{
+    toastBox.classList.remove("show");
+  },2200);
+
+}
+
+/* ADD MESSAGE */
+
+function addMessage(text,type){
+
+  const message = document.createElement("div");
+
+  message.className = "message " + type;
+
+  const avatar = document.createElement("div");
+
+  avatar.className =
+    "avatar " +
+    (type === "ai" ? "ai-avatar" : "user-avatar");
+
+  avatar.textContent =
+    type === "ai" ? "🧠" : "👤";
+
+  const bubble = document.createElement("div");
+
+  bubble.className = "bubble";
+  bubble.textContent = text;
+
+  message.appendChild(avatar);
+  message.appendChild(bubble);
+
+  chatInner.appendChild(message);
+
+  chat.scrollTo({
+    top:chat.scrollHeight,
+    behavior:"smooth"
+  });
+
+}
+
+/* TYPING */
+
+function showTyping(){
+
+  const message = document.createElement("div");
+
+  message.className = "message ai";
+  message.id = "typingMessage";
+
+  message.innerHTML = `
+    <div class="avatar ai-avatar">🧠</div>
+    <div class="bubble">
+      <div class="typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  `;
+
+  chatInner.appendChild(message);
+
+  chat.scrollTo({
+    top:chat.scrollHeight,
+    behavior:"smooth"
+  });
+}
+
+function removeTyping(){
+
+  const typing =
+    document.getElementById("typingMessage");
+
+  if(typing) typing.remove();
+
+}
+
+/* ASK AI */
+
+async function askAI(){
+
+  const text = question.value.trim();
+
+  if(!text){
+
+    toast("Type a question first.");
+    question.focus();
+    return;
+
+  }
+
+  welcome.style.display = "none";
+
+  addMessage(text,"user");
+
+  question.value = "";
+  question.style.height = "42px";
+
+  showTyping();
+
+  /*
+    IMPORTANT:
+
+    The frontend calls your Cloudflare Worker.
+
+    Your Worker will later handle the actual AI request.
+
+    We intentionally do NOT put an AI API key here.
+  */
+
+  try{
+
+    const response = await fetch("/api/chat",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        message:text
+      })
+
+    });
+
+    if(!response.ok){
+
+      throw new Error("AI request failed");
+
+    }
+
+    const data = await response.json();
+
+    removeTyping();
+
+    addMessage(
+      data.reply || "I couldn't generate an answer.",
+      "ai"
+    );
+
+  }catch(error){
+
+    removeTyping();
+
+    addMessage(
+      "I'm not connected to the AI yet. Your Study Buddy interface is ready, but we still need to connect the Cloudflare AI backend.",
+      "ai"
+    );
+
+  }
+
+}
+
+/* SEND */
+
+askButton.addEventListener("click",askAI);
+
+question.addEventListener("keydown",(event)=>{
+
+  if(event.key === "Enter" && !event.shiftKey){
+
+    event.preventDefault();
+    askAI();
+
+  }
+
+});
+
+/* AUTO RESIZE */
+
+question.addEventListener("input",()=>{
+
+  question.style.height = "42px";
+
+  question.style.height =
+    Math.min(question.scrollHeight,120) + "px";
+
+});
+
+/* QUICK BUTTONS */
+
+document.querySelectorAll("[data-prompt]").forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    const prompt = button.dataset.prompt;
+
+    question.value = prompt;
+
+    question.focus();
+
+  });
+
+});
+
+/* MENU */
+
+menuBtn.addEventListener("click",()=>{
+
+  overlay.classList.add("show");
+
+});
+
+closeMenu.addEventListener("click",()=>{
+
+  overlay.classList.remove("show");
+
+});
+
+overlay.addEventListener("click",(event)=>{
+
+  if(event.target === overlay){
+
+    overlay.classList.remove("show");
+
+  }
+
+});
+
+/* NEW CHAT */
+
+function newChat(){
+
+  chatInner.innerHTML = "";
+
+  const newWelcome = document.createElement("section");
+
+  newWelcome.className = "welcome";
+
+  newWelcome.innerHTML = `
+    <div class="big-logo">🧠</div>
+
+    <h2>What do you want to learn?</h2>
+
+    <p>
+      Ask anything. I'll explain difficult topics,
+      help you study and test your knowledge.
+    </p>
+
+    <div class="quick-actions">
+
+      <button class="quick" data-prompt="Explain this topic in very simple words.">
+        <div class="quick-icon">💡</div>
+        <strong>Explain</strong>
+        <small>Make difficult topics simple</small>
+      </button>
+
+      <button class="quick" data-prompt="Create a short quiz about this topic.">
+        <div class="quick-icon">📝</div>
+        <strong>Quiz me</strong>
+        <small>Test my knowledge</small>
+      </button>
+
+      <button class="quick" data-prompt="Create flashcards for this topic.">
+        <div class="quick-icon">🗂️</div>
+        <strong>Flashcards</strong>
+        <small>Remember key facts</small>
+      </button>
+
+      <button class="quick" data-prompt="Summarize this topic for studying.">
+        <div class="quick-icon">📚</div>
+        <strong>Summarize</strong>
+        <small>Get the important points</small>
+      </button>
+
+    </div>
+  `;
+
+  chatInner.appendChild(newWelcome);
+
+  newWelcome.querySelectorAll("[data-prompt]").forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+      question.value = button.dataset.prompt;
+      question.focus();
+
+    });
+
+  });
+
+  overlay.classList.remove("show");
+
+  toast("New chat started.");
+
+}
+
+newChatBtn.addEventListener("click",newChat);
+drawerNewChat.addEventListener("click",newChat);
+
+/* VOICE */
+
+voiceBtn.addEventListener("click",()=>{
+
+  if(!("webkitSpeechRecognition" in window) &&
+     !("SpeechRecognition" in window)){
+
+    toast("Voice input isn't supported by this browser.");
+    return;
+
+  }
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-NG";
+  recognition.interimResults = false;
+
+  voiceBtn.textContent = "🎙️ Listening...";
+
+  recognition.start();
+
+  recognition.onresult = (event)=>{
+
+    question.value =
+      event.results[0][0].transcript;
+
+    question.dispatchEvent(new Event("input"));
+
+    question.focus();
+
+  };
+
+  recognition.onerror = ()=>{
+
+    toast("I couldn't hear that. Try again.");
+
+  };
+
+  recognition.onend = ()=>{
+
+    voiceBtn.textContent = "🎤 Voice";
+
+  };
+
+});
+
+/* PHOTO BUTTON */
+
+attachBtn.addEventListener("click",()=>{
+
+  toast("Photo questions will be connected next.");
+
+});
+
+/* INITIAL FOCUS */
+
+question.focus();
+
+</script>
+
+</body>
+</html>
