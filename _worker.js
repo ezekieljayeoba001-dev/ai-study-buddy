@@ -2,7 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // AI chat endpoint
     if (url.pathname === "/api/chat" && request.method === "POST") {
       try {
         const body = await request.json();
@@ -35,15 +34,18 @@ export default {
         return Response.json({
           reply: result.response
         });
+
       } catch (error) {
         return Response.json(
-          { error: "AI request failed", details: error.message },
+          {
+            error: "AI request failed",
+            details: error.message
+          },
           { status: 500 }
         );
       }
     }
 
-    // Serve the website
     return env.ASSETS.fetch(request);
   }
 };
